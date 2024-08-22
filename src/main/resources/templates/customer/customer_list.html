@@ -44,7 +44,7 @@
 <body class="container">
 <!-- start codes -->
 
-<div th:if="${customer_list}!=null"
+<div th:if="${key_customer_list}!=null"
     class="alert alert-warning alert-dismissible fade show mt-5 mb-3"
     role="alert">
     <button
@@ -62,7 +62,7 @@
 <a th:href="@{/customer/mvc/v1/deleteAll}" class="btn btn-danger">BÜTÜN VERİLERİ SİL</a>
 
 <!--Eğer Listede Herhangi bir veri yoksa Listeyi gösterme-->
-<div th:if="${customer_list}!=null" class="container mt-3 mb-3">
+<div th:if="${key_customer_list}!=null" class="container mt-3 mb-3">
     <!--TABLE-->
 <table class="table table-striped table-bordered table-hover"
 id="datalistregisterTable"
@@ -92,7 +92,7 @@ id="datalistregisterTable"
     -->
 
 <!-- BODY -->
- <tr th:if="${custList.id>0}" th:each="custList:${customer_list}">
+ <tr th:if="${custList.id>0}" th:each="custList:${key_customer_list}">
     <td th:text="${custList.id}"></td>
     <td th:text="${custList.customerName}"></td>
     <td th:text="${custList.customerSurname}"></td>

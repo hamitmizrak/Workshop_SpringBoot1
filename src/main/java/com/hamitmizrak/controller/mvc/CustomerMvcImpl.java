@@ -104,10 +104,21 @@ public class CustomerMvcImpl implements ICustomerMvc{
 
     ////////////////////////////////////////////////////////////////////////////////////
     // FIND
+    // http://localhost:4444/customer/mvc/v1/find
     // http://localhost:4444/customer/mvc/v1/find/1
     @Override
-    @GetMapping("/find/{id}")
+    @GetMapping({"/find","/find/{id}"})
     public String customerFindGet(@PathVariable(name="id") Long id, Model model) {
+        // Database olmadan Veri göstermek
+        CustomerDto customerDto=CustomerDto.builder()
+                .id(id)
+                .name("name"+id)
+                .surname("surname"+id)
+                .email("email"+id)
+                .password("password"+id)
+                .createdDate(new Date(System.currentTimeMillis()))
+        .build();
+        model.addAttribute("find_key",customerDto);
         return "customer/view"; // Burası view sayfasına gidilecek yerdir
     }
 

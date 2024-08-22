@@ -135,7 +135,7 @@ public class CustomerMvcImpl implements ICustomerMvc{
     // http://localhost:4444/customer/mvc/v1/update/1
     @Override
     @GetMapping("/update/{id}")
-    public String customerCreatePost(
+    public String customerUpdatePost(
             @PathVariable(name="id") Long id,
             @Valid @ModelAttribute("customer_update") CustomerDto customerDto,
             BindingResult bindingResult,

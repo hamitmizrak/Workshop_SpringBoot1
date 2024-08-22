@@ -39,5 +39,5 @@ public interface ICustomerMvc {
     public String customerUpdateGet(Long id, Model model);
 
     // UPDATE POST
-    public String customerCreatePost(Long id,CustomerDto customerDto, BindingResult bindingResult, Model model);
+    public String customerUpdatePost(Long id,CustomerDto customerDto, BindingResult bindingResult, Model model);
 }

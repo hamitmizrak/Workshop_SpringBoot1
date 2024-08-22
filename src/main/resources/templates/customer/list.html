@@ -44,7 +44,77 @@
 <body class="container">
 <!-- start codes -->
 
+<div th:if="${customer_list}!=null"
+    class="alert alert-warning alert-dismissible fade show mt-5 mb-3"
+    role="alert">
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+    ></button>
+    <strong th:text="${modelAttributesTemp}" ></strong>
+</div>
 
+<h1 class="text-primary mt-3">Customer List</h1>
+<a th:href="@{/customer/mvc/v1/create}" class="btn btn-primary">VERİ EKLE</a>
+<a th:href="@{/customer/mvc/v1/speed}" href="" class="btn btn-secondary">HIZLI VERİ EKLE</a>
+<a th:href="@{/customer/mvc/v1/deleteAll}" class="btn btn-danger">BÜTÜN VERİLERİ SİL</a>
+
+<!--Eğer Listede Herhangi bir veri yoksa Listeyi gösterme-->
+<div th:if="${customer_list}!=null" class="container mt-3 mb-3">
+    <!--TABLE-->
+<table class="table table-striped table-bordered table-hover"
+id="datalistregisterTable"
+>
+
+<!-- TABLE- HEAD -->
+<thead>
+    <tr>
+        <th class="text-uppercase" th:text="#{customer.id}"></th>
+        <th class="text-uppercase" th:text="#{customer.name}"></th>
+        <th class="text-uppercase" th:text="#{customer.surname}"></th>
+        <th class="text-uppercase" th:text="#{customer.email}"></th>
+        <th class="text-uppercase" th:text="#{customer.password}"></th>
+        <th class="text-uppercase" th:text="#{customer.date}"></th>
+        <th class="text-uppercase" th:text="#{customer.update}"></th>
+        <th class="text-uppercase" th:text="#{customer.show}"></th>
+        <th class="text-uppercase" th:text="#{customer.delete}"></th>
+    </tr>
+</thead>
+
+<!-- BODY -->
+ <tr th:if="${custList.id>0}" th:each="custList:${customer_list}">
+    <td th:text="${custList.id}"></td>
+    <td th:text="${custList.name}"></td>
+    <td th:text="${custList.surname}"></td>
+    <td th:text="${custList.email}"></td>
+    <td th:text="${custList.password}"></td>
+    <td th:text="${custList.createdDate}"></td>
+
+    <!-- Link: update -->
+    <td>
+        <a th:href="@{/customer/update/{id}(id=${custList.id})}" class="btn btn-primary">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </a>
+    </td>
+
+    <!-- Link: show -->
+    <td>
+        <a th:href="@{/customer/find/{id}(id=${custList.id})}" class="btn btn-warning">
+            <i class="fa-solid fa-binoculars"></i>
+        </a>
+    </td>
+
+    <!-- Link: delete -->
+    <td>
+        <a th:href="@{/customer/delete/{id}(id=${custList.id})}" class="btn btn-danger">
+            <i class="fa-solid fa-trash"></i>
+        </a>
+    </td>
+ </tr>
+</table>
+</div>
 
 
 <!-- ends codes -->

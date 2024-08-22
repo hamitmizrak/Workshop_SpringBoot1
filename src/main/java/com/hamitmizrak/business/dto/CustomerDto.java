@@ -52,3 +52,4 @@ public class CustomerDto implements Serializable {
     // Date
     private Date createdDate;
 } //end CustomerDto
+

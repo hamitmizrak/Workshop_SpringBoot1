@@ -77,19 +77,27 @@ id="datalistregisterTable"
         <th class="text-uppercase" th:text="#{customer.email}"></th>
         <th class="text-uppercase" th:text="#{customer.password}"></th>
         <th class="text-uppercase" th:text="#{customer.date}"></th>
-        <th class="text-uppercase" th:text="#{customer.update}"></th>
-        <th class="text-uppercase" th:text="#{customer.show}"></th>
-        <th class="text-uppercase" th:text="#{customer.delete}"></th>
+        <th class="text-uppercase" th:text="#{update}"></th>
+        <th class="text-uppercase" th:text="#{show}"></th>
+        <th class="text-uppercase" th:text="#{delete}"></th>
     </tr>
 </thead>
+    <!--
+    private Long id;
+    private String customerName;
+    private String customerSurname;
+    private String customerEmail;
+    private String customerPassword;
+    private Date createdDate;
+    -->
 
 <!-- BODY -->
  <tr th:if="${custList.id>0}" th:each="custList:${customer_list}">
     <td th:text="${custList.id}"></td>
-    <td th:text="${custList.name}"></td>
-    <td th:text="${custList.surname}"></td>
-    <td th:text="${custList.email}"></td>
-    <td th:text="${custList.password}"></td>
+    <td th:text="${custList.customerName}"></td>
+    <td th:text="${custList.customerSurname}"></td>
+    <td th:text="${custList.customerEmail}"></td>
+    <td th:text="${custList.customerPassword}"></td>
     <td th:text="${custList.createdDate}"></td>
 
     <!-- Link: update -->

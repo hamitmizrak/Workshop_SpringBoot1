@@ -19,8 +19,7 @@ import java.util.Date;
 @Builder
 @Log4j2
 
-// DTO
-// Validation
+// DTO (Validation)
 public class CustomerDto implements Serializable {
 
     // Serileştirme
@@ -30,26 +29,28 @@ public class CustomerDto implements Serializable {
     private Long id;
 
     // NAME
+    // @NotEmpty(message = "Müşteri adını boş geçemezsiniz")
     @NotEmpty(message = "{customer.name.validation.constraints.NotNull.message}")
-    private String name;
+    private String customerName;
 
     // SURNAME
     @NotEmpty(message = "{customer.surname.validation.constraints.NotNull.message}")
-    private String surname;
+    private String customerSurname;
 
     // E-mail
     @NotEmpty(message = "{customer.email.validation.constraints.NotNull.message}")
     @Size(min = 7,max = 20, message = "{customer.email.validation.regex.constraints.NotNull.message}")
     @Email
-    private String email;
+    private String customerEmail;
 
     // Password
     @NotEmpty(message = "{customer.password.validation.constraints.NotNull.message}")
     @Size(min = 7,max = 20, message = "{customer.password.pattern.validation.constraints.NotNull.message}")
     //@Pattern(regexp = "",message = "{}")
-    private String password;
+    private String customerPassword;
 
     // Date
     private Date createdDate;
 } //end CustomerDto
+
 

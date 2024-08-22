@@ -32,12 +32,12 @@ public interface ICustomerMvc {
     // FIND
     public String customerFindGet(Long id, Model model);
 
-    // DELETE
-    public String customerDeleteGet(Long id, Model model);
-
     // UPDATE GET
     public String customerUpdateGet(Long id, Model model);
 
     // UPDATE POST
     public String customerUpdatePost(Long id,CustomerDto customerDto, BindingResult bindingResult, Model model);
+
+    // DELETE
+    public String customerDeleteGet(Long id, Model model);
 }

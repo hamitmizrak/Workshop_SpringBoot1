@@ -43,8 +43,19 @@
 
 <body class="container">
 <!-- start codes -->
+<h1 class="text-primary">Customer Detay Sayfası</h1>
+<div class="card" style="width: 20rem;">
+    <img class="card-img-top" src="holder.js/100x180/" alt="Title" />
+    <div class="card-body text-center">
+        <h4 th:text="${find_key.id}" class="card-title"></h4>
+        <p th:text="${find_key.name}" class="card-text"></p>
+        <p th:text="${find_key.surname}" class="card-text"></p>
+        <p th:text="${find_key.email}" class="card-text"></p>
+        <p th:text="${find_key.password}" class="card-text"></p>
+        <p th:text="${find_key.createdDate}" class="card-text"></p>
+    </div>
+</div>
 
-VIEW
 
 <!-- ends codes -->
 <!-- dataTables JS: paging and sorting -->

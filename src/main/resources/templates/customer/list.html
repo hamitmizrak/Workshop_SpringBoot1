@@ -94,21 +94,21 @@ id="datalistregisterTable"
 
     <!-- Link: update -->
     <td>
-        <a th:href="@{/customer/update/{id}(id=${custList.id})}" class="btn btn-primary">
+        <a th:href="@{/customer/mvc/v1/update/{id}(id=${custList.id})}" class="btn btn-primary">
             <i class="fa-solid fa-pen-to-square"></i>
         </a>
     </td>
 
     <!-- Link: show -->
     <td>
-        <a th:href="@{/customer/find/{id}(id=${custList.id})}" class="btn btn-warning">
+        <a th:href="@{/customer/mvc/v1/find/{id}(id=${custList.id})}" class="btn btn-warning">
             <i class="fa-solid fa-binoculars"></i>
         </a>
     </td>
 
     <!-- Link: delete -->
     <td>
-        <a th:href="@{/customer/delete/{id}(id=${custList.id})}" class="btn btn-danger">
+        <a th:href="@{/customer/mvc/v1/delete/{id}(id=${custList.id})}" class="btn btn-danger">
             <i class="fa-solid fa-trash"></i>
         </a>
     </td>

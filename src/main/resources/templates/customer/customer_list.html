@@ -116,8 +116,8 @@ id="datalistregisterTable"
 
     <!-- Link: delete -->
     <td>
-        <a th:href="@{/customer/mvc/v1/delete/{id}(id=${custList.id})}" class="btn btn-danger">
-            <i class="fa-solid fa-trash"></i>
+        <a class="btn btn-danger"
+           th:onclick="'deleteSweetAlertRegister(\'/customer/mvc/v1/delete/'+${custList.id}+'\')'"><i class=" text-white fa-solid fa-trash text-danger"></i>
         </a>
     </td>
  </tr>

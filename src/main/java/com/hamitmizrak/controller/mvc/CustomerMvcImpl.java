@@ -122,8 +122,8 @@ public class CustomerMvcImpl implements ICustomerMvc {
     // http://localhost:4444/customer/mvc/v1/find
     // http://localhost:4444/customer/mvc/v1/find/1
     @Override
-    @GetMapping({"/find", "/find/{id}"})
-    public String customerFindGet(@PathVariable(name = "id",required = false) Long id, Model model) {
+    @GetMapping( "/find/{id}")
+    public String customerFindGet(@PathVariable(name = "id") Long id, Model model) {
 
         // eğer id numaralı veri varsa
         if (iCustomerServices.customerFindServices(id)!=null) {
@@ -140,8 +140,8 @@ public class CustomerMvcImpl implements ICustomerMvc {
     // UPDATE GET
     // http://localhost:4444/customer/mvc/v1/update/1
     @Override
-    @GetMapping({"/update", "/update/{id}"})
-    public String customerUpdateGet(@PathVariable(name = "id",required = false) Long id, Model model) {
+    @GetMapping( "/update/{id}")
+    public String customerUpdateGet(@PathVariable(name = "id") Long id, Model model) {
         modelAttributesTemp = id + " numaralı veri yoktur";
         CustomerDto customerDto = null;
         model.addAttribute("key_customer_update", iCustomerServices.customerFindServices(id));
@@ -151,9 +151,9 @@ public class CustomerMvcImpl implements ICustomerMvc {
     // UPDATE POST
     // http://localhost:4444/customer/mvc/v1/update/1
     @Override
-    @PostMapping({"/update", "/update/{id}"})
+    @PostMapping( "/update/{id}")
     public String customerUpdatePost(
-            @PathVariable(name = "id",required = false) Long id,
+            @PathVariable(name = "id") Long id,
             @Valid @ModelAttribute("customer_update") CustomerDto customerDto,
             BindingResult bindingResult,
             Model model) {
@@ -183,13 +183,14 @@ public class CustomerMvcImpl implements ICustomerMvc {
     // DELETE
     // http://localhost:4444/customer/mvc/v1/delete/1
     @Override
-    @GetMapping({"/delete", "/delete/{id}"})// Not: Thymeleaf için deleteMapping yazmayız
-    public String customerDeleteGet(@PathVariable(name = "id",required = false) Long id, Model model) {
+    @GetMapping("/delete/{id}")// Not: Thymeleaf için deleteMapping yazmayız
+    public String customerDeleteGet(@PathVariable(name = "id") Long id, Model model) {
         // eğer id numaralı veri varsa
         if (iCustomerServices.customerFindServices(id)!=null) {
             model.addAttribute("key_customer_delete", iCustomerServices.customerFindServices(id));
             iCustomerServices.customerDeleteServices(id);
             modelAttributesTemp = iCustomerServices.customerFindServices(id)+" Silindi";
+            return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
         }else{ //Yoksa
             model.addAttribute("key_customer_delete",id+" nolu Customer Yoktur");
         }

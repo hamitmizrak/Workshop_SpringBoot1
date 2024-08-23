@@ -44,22 +44,59 @@
 <body class="container">
 <!-- start codes -->
 
-CREATE
+<h1 class="text-center text-primary text-uppercase">CUSTOMER CREATE</h1>
+
+<!--
+Aşağıdaki özellikleri eklerken CustomerDto attributeslarına göre eklenmelidir.
+private Long id;
+private String customerName;
+private String customerSurname;
+private String customerEmail;
+private String customerPassword;
+-->
+
+<!--
+th:action="@{/customer/mvc/create}"  => Çalışacak Spring MVC @Controller sayfası
+th:method="post"  => Method Create olduğu için post yazılır.
+th:object="${customer_create}" => Backendtten gelen model.addAttributes()
+th:field="*{name}"
+name="name"
+th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+-->
+
+<form th:action="@{/customer/mvc/v1/create}" th:method="post" th:object="${key_customer_create}">
+    <div class="form-group mb-4">
+        <label for="customerName">Müşteri Adınız</label>
+        <input type="text" class="form-control" th:field="*{customerName}"  autofocus="true" placeholder="Müşteri adınız" id="customerName" name="customerName"/>
+        <div class="text-danger" th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}"></div>
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="customerSurname">Müşteri Soyadınız</label>
+        <input type="text" class="form-control" th:field="*{customerSurname}" autofocus="false" placeholder="Müşteri soyadınız" id="customerSurname" name="customerSurname"/>
+        <div class="text-danger" th:if="${#fields.hasErrors('customerSurname')}" th:errors="*{customerSurname}"></div>
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="customerEmail">Müşteri Emaliniz</label>
+        <input type="text" class="form-control" th:field="*{customerEmail}"  autofocus="false" placeholder="Müşteri emailiniz" id="customerEmail" name="customerEmail"/>
+        <div class="text-danger" th:if="${#fields.hasErrors('customerEmail')}" th:errors="*{customerEmail}"></div>
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="customerPassword">Müşteri Şifreniz</label>
+        <input type="text" class="form-control" th:field="*{customerPassword}" autofocus="false" placeholder="Müşteri Şifreniz " id="customerPassword" name="customerPassword"/>
+        <div class="text-danger" th:if="${#fields.hasErrors('customerPassword')}" th:errors="*{customerPassword}"></div>
+    </div>
+
+    <div class="form-group mb-4 mt-3">
+        <input type="reset" class="btn btn-danger" value="Temizle"/>
+        <input type="submit" class="btn btn-primary" value="Gönder"/>
+        <a th:href="@{/customer/mvc/v1/list}" class="btn btn-warning">Customer List</a>
+    </div>
+</form>
 
 <!-- ends codes -->
-<!-- dataTables JS: paging and sorting -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#datalistregisterTable").DataTable({
-            'aoColumnDefs': [{
-                'bSortable': false,
-                'aTargets': [-1] /* 1st one, start by the right */
-            }]
-        });
-    })
-</script>
 
 <!--Bootstrap-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

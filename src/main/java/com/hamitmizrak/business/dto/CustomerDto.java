@@ -40,12 +40,12 @@ public class CustomerDto implements Serializable {
     // E-mail
     @NotEmpty(message = "{customer.email.validation.constraints.NotNull.message}")
     @Size(min = 7,max = 20, message = "{customer.email.validation.regex.constraints.NotNull.message}")
-    @Email
+    //@Email
     private String customerEmail;
 
     // Password
     @NotEmpty(message = "{customer.password.validation.constraints.NotNull.message}")
-    @Size(min = 7,max = 20, message = "{customer.password.pattern.validation.constraints.NotNull.message}")
+    //@Size(min = 7,max = 60, message = "{customer.password.pattern.validation.constraints.NotNull.message}")
     //@Pattern(regexp = "",message = "{}")
     private String customerPassword;
 

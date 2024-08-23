@@ -1,13 +1,11 @@
 package com.hamitmizrak.controller.mvc;
 
-import com.hamitmizrak.bean.ModelMapperBean;
+
 import com.hamitmizrak.business.dto.CustomerDto;
-import com.hamitmizrak.data.entity.CustomerEntity;
-import com.hamitmizrak.data.repository.ICustomerRepository;
+import com.hamitmizrak.business.services.ICustomerServices;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,28 +25,8 @@ public class CustomerMvcImpl implements ICustomerMvc {
 
     // Variable
     private String modelAttributesTemp = null;
+    private final ICustomerServices iCustomerServices;
 
-    // Injection
-    // 1.YOL (ICustomerRepository)
-    /*
-    @Autowired
-    private ICustomerRepository iCustomerRepository;
-    */
-
-    //2.YOL (ICustomerRepository)
-    /*
-    private final ICustomerRepository iCustomerRepository;
-    @Autowired // Eğer 1 tane variable varsa @Autowired yazmak zorunda değilsiniz.
-    public CustomerMvcImpl(ICustomerRepository iCustomerRepository) {
-        this.iCustomerRepository = iCustomerRepository;
-    }
-    */
-
-    //3.YOL (ICustomerRepository)
-    private final ICustomerRepository iCustomerRepository;
-
-    // Model Mapper (DTO=>ENTITY)
-    private final ModelMapperBean modelMapperBean;
 
     ////////////////////////////////////////////////////////////////
     // SPEED DATA
@@ -56,17 +34,9 @@ public class CustomerMvcImpl implements ICustomerMvc {
     @Override
     @GetMapping("/speed")
     public String speedData() {
-        for (int i = 1; i <= 10; i++) {
-            CustomerEntity customerEntity = CustomerEntity.builder()
-                    .customerName("adi" + i)
-                    .customerSurname("soyadi" + i)
-                    .customerEmail("email" + i + "gmail.com")
-                    .customerPassword("şifre" + i)
-                    .build();
-            iCustomerRepository.save(customerEntity);
-        }
-        modelAttributesTemp = "10 Tane veri eklendi";
-        return "redirect:/customer/mvc/v1/list";
+
+        modelAttributesTemp = iCustomerServices.speedDataServices().size()+" Veri eklendi";
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
     }
 
     // DELETE ALL
@@ -74,9 +44,9 @@ public class CustomerMvcImpl implements ICustomerMvc {
     @Override
     @GetMapping("/deleteAll")
     public String deleteAll() {
-        iCustomerRepository.deleteAll();
-        modelAttributesTemp = "Bütün veriler silindi";
-        return "redirect:/customer/mvc/v1/list";
+        iCustomerServices.deleteAllServices();
+        modelAttributesTemp = iCustomerServices.customerListServices().size()+" tane Bütün veriler silindi";
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
     }
 
 
@@ -104,10 +74,9 @@ public class CustomerMvcImpl implements ICustomerMvc {
             log.error(bindingResult.hasErrors());
             return "customer/customer_create";
         }
-        CustomerEntity customerEntity = modelMapperBean.modelMapperMethod().map(customerDto, CustomerEntity.class);
-        iCustomerRepository.save(customerEntity);
-        modelAttributesTemp = "Eklendi CustomerDto";
-        return "redirect:/customer/mvc/v1/list"; // Burası list sayfasına gidilecek yerdir
+        iCustomerServices.customerCreateServices(customerDto);
+        modelAttributesTemp = "Eklendi CustomerDto"+ customerDto ;
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -142,9 +111,8 @@ public class CustomerMvcImpl implements ICustomerMvc {
         */
 
         // 2.YOL
-        List<CustomerEntity> customerEntityList = iCustomerRepository.findAll();
-        model.addAttribute("key_customer_list", customerEntityList);
-        modelAttributesTemp = customerEntityList.size() + " tane veri eklendi";
+        model.addAttribute("key_customer_list", iCustomerServices.customerListServices());
+        modelAttributesTemp = iCustomerServices.customerListServices().size() + " tane veri eklendi";
         model.addAttribute("modelAttributesTemp", modelAttributesTemp);
         return "customer/customer_list"; // Burası list sayfasına gidilecek yerdir
     }
@@ -156,17 +124,16 @@ public class CustomerMvcImpl implements ICustomerMvc {
     @Override
     @GetMapping({"/find", "/find/{id}"})
     public String customerFindGet(@PathVariable(name = "id",required = false) Long id, Model model) {
-        // Database Veri bulmak
-        Optional<CustomerEntity> findCustomerEntity = iCustomerRepository.findById(id);
+
         // eğer id numaralı veri varsa
-        if (findCustomerEntity.isPresent()) {
-            model.addAttribute("key_customer_find", findCustomerEntity.get());
+        if (iCustomerServices.customerFindServices(id)!=null) {
+            model.addAttribute("key_customer_find", iCustomerServices.customerFindServices(id));
             return "customer/customer_view"; // Burası view sayfasına gidilecek yerdir
         }else{ //Yoksa
             model.addAttribute("key_customer_find",id+" nolu Customer Yoktur");
         }
-        model.addAttribute("key_customer_find", modelMapperBean.modelMapperMethod().map(findCustomerEntity,CustomerDto.class));
-        return "redirect:/customer/customer_list"; // Burası list sayfasına gidilecek yerdir
+        model.addAttribute("key_customer_find", iCustomerServices.customerFindServices(id));
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +144,7 @@ public class CustomerMvcImpl implements ICustomerMvc {
     public String customerUpdateGet(@PathVariable(name = "id",required = false) Long id, Model model) {
         modelAttributesTemp = id + " numaralı veri yoktur";
         CustomerDto customerDto = null;
-        model.addAttribute("key_customer_update", customerDto);
+        model.addAttribute("key_customer_update", iCustomerServices.customerFindServices(id));
         return "customer/customer_update"; // Burası create sayfasına gidilecek yerdir
     }
 
@@ -197,22 +164,19 @@ public class CustomerMvcImpl implements ICustomerMvc {
             log.error(bindingResult.hasErrors());
             return "customer/customer_update";
         }else{
-            // Database Veri bulmak
-            Optional<CustomerEntity> findCustomerEntity = iCustomerRepository.findById(id);
+
             // eğer id numaralı veri varsa
-            if (findCustomerEntity.isPresent()) {
-                model.addAttribute("key_customer_update", findCustomerEntity.get());
-                CustomerEntity customerEntity = modelMapperBean.modelMapperMethod().map(customerDto, CustomerEntity.class);
-                iCustomerRepository.save(customerEntity);
+            if (iCustomerServices.customerFindServices(id)!=null) {
+                model.addAttribute("key_customer_update", iCustomerServices.customerFindServices(id));
+                iCustomerServices.customerUpdateServices(id,customerDto);
                 modelAttributesTemp = "Eklendi CustomerDto";
             }else{ //Yoksa
                 model.addAttribute("key_customer_update",id+" nolu Customer Yoktur");
                 return "customer/customer_update";
             }
         }
-
         // Anasayfaya Göndersin
-        return "redirect:/customer/customer_list"; // Burası create sayfasına gidilecek yerdir
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
     } //end customerCreatePost
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -221,17 +185,15 @@ public class CustomerMvcImpl implements ICustomerMvc {
     @Override
     @GetMapping({"/delete", "/delete/{id}"})// Not: Thymeleaf için deleteMapping yazmayız
     public String customerDeleteGet(@PathVariable(name = "id",required = false) Long id, Model model) {
-        // Database Veri bulmak
-        Optional<CustomerEntity> findCustomerDeleteEntity = iCustomerRepository.findById(id);
         // eğer id numaralı veri varsa
-        if (findCustomerDeleteEntity.isPresent()) {
-            model.addAttribute("key_customer_delete", findCustomerDeleteEntity.get());
-            iCustomerRepository.deleteById(id);
-            modelAttributesTemp = "Silindi";
+        if (iCustomerServices.customerFindServices(id)!=null) {
+            model.addAttribute("key_customer_delete", iCustomerServices.customerFindServices(id));
+            iCustomerServices.customerDeleteServices(id);
+            modelAttributesTemp = iCustomerServices.customerFindServices(id)+" Silindi";
         }else{ //Yoksa
             model.addAttribute("key_customer_delete",id+" nolu Customer Yoktur");
         }
-        return "redirect:/customer/customer_list"; // Burası list sayfasına gidilecek yerdir
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
     }
 
 }//end CustomerMvcImpl

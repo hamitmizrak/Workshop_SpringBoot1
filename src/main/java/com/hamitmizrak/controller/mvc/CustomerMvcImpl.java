@@ -4,7 +4,9 @@ package com.hamitmizrak.controller.mvc;
 import com.hamitmizrak.business.dto.CustomerDto;
 import com.hamitmizrak.business.services.ICustomerServices;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +18,17 @@ import java.util.*;
 // LOMBOK
 @RequiredArgsConstructor
 @Log4j2
+@Getter
+@Setter
 
 // SPRING MVC
 // Dikkat: Spring MVC ile çalışırken;  sistem kararlığı için @GetMapping ile @PostMapping ile çalışın
 @Controller
-@RequestMapping("/customer/mvc/v1")
+@RequestMapping("/customer/mvc/v1/")
 public class CustomerMvcImpl implements ICustomerMvc {
 
     // Variable
-    private String modelAttributesTemp = null;
+    private String modelAttributesTemp = "";
     private final ICustomerServices iCustomerServices;
 
 
@@ -65,7 +69,7 @@ public class CustomerMvcImpl implements ICustomerMvc {
     @Override
     @PostMapping("/create")
     public String customerCreatePost(
-            @Valid @ModelAttribute("customer_create") CustomerDto customerDto,
+            @Valid @ModelAttribute("key_customer_create") CustomerDto customerDto,
             BindingResult bindingResult,
             Model model) {
         // Eğer Hata varsa Create Sayfasında kalsın
@@ -76,7 +80,7 @@ public class CustomerMvcImpl implements ICustomerMvc {
         }
         iCustomerServices.customerCreateServices(customerDto);
         modelAttributesTemp = "Eklendi CustomerDto"+ customerDto ;
-        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
+        return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.r.
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +158,7 @@ public class CustomerMvcImpl implements ICustomerMvc {
     @PostMapping( "/update/{id}")
     public String customerUpdatePost(
             @PathVariable(name = "id") Long id,
-            @Valid @ModelAttribute("customer_update") CustomerDto customerDto,
+            @Valid @ModelAttribute("key_customer_update") CustomerDto customerDto,
             BindingResult bindingResult,
             Model model) {
 
@@ -189,12 +193,11 @@ public class CustomerMvcImpl implements ICustomerMvc {
         if (iCustomerServices.customerFindServices(id)!=null) {
             model.addAttribute("key_customer_delete", iCustomerServices.customerFindServices(id));
             iCustomerServices.customerDeleteServices(id);
-            modelAttributesTemp = iCustomerServices.customerFindServices(id)+" Silindi";
-            return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
         }else{ //Yoksa
             model.addAttribute("key_customer_delete",id+" nolu Customer Yoktur");
         }
         return "redirect:/customer/mvc/v1/list"; // Burası @GetMapping URL gidecek yer.
+        // iCustomerServices.customerFindServices(id)+" Silindi";
     }
 
 }//end CustomerMvcImpl

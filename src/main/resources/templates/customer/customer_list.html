@@ -56,6 +56,7 @@
     <strong th:text="${modelAttributesTemp}" ></strong>
 </div>
 
+
 <h1 class="text-primary mt-3">Customer List</h1>
 <a th:href="@{/customer/mvc/v1/create}" class="btn btn-primary">VERİ EKLE</a>
 <a th:href="@{/customer/mvc/v1/speed}" href="" class="btn btn-secondary">HIZLI VERİ EKLE</a>
@@ -100,14 +101,14 @@ id="datalistregisterTable"
     <td th:text="${custList.customerPassword}"></td>
     <td th:text="${custList.createdDate}"></td>
 
-    <!-- Link: update -->
+    <!-- Link: Customer update -->
     <td>
         <a th:href="@{/customer/mvc/v1/update/{id}(id=${custList.id})}" class="btn btn-primary">
             <i class="fa-solid fa-pen-to-square"></i>
         </a>
     </td>
 
-    <!-- Link: show -->
+    <!-- Link: Customer show -->
     <td>
         <a th:href="@{/customer/mvc/v1/find/{id}(id=${custList.id})}" class="btn btn-warning">
             <i class="fa-solid fa-binoculars"></i>

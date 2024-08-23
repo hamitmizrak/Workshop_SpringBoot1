@@ -2,11 +2,7 @@ package com.hamitmizrak.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedBy;
-
 import java.io.Serializable;
-import java.util.Date;
 
 // LOMBOK
 @Data

@@ -10,9 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // LOMBOK
 @RequiredArgsConstructor
 @Log4j2
@@ -47,7 +44,5 @@ public class DataSetMainRunner {
         };
 
     }
-
-
 
 }
